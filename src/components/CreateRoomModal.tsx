@@ -30,6 +30,8 @@ export const CreateRoomModal: React.FC<CreateRoomModalProps> = ({
     
     if (!trimmedUsername) {
       newErrors.username = "Por favor, ingresa tu nombre de usuario";
+    } else if (trimmedUsername.length > 10) {
+      newErrors.username = "El nombre de usuario no puede tener más de 10 caracteres";
     }
     
     if (Object.keys(newErrors).length > 0) {
