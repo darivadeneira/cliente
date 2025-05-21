@@ -251,7 +251,8 @@ export const Home: React.FC = () => {
       setCurrentView("home");
       setSelectedRoom(null);
       setUsername("");
-      joinInProgress.current = false;
+      setMessageHistory({ messages: [], users: [] }); // Limpiar historial
+      joinInProgress.current = false; // Resetear unión
     }
   };
 
