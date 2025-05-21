@@ -72,9 +72,22 @@ export const ChatRoom: React.FC<ChatRoomProps> = ({
       setTimeout(scrollToBottom, 100); // Pequeño retraso para asegurar el scroll
     });
 
+    // Escuchar cuando un usuario se une a la sala
+    socketRef.current.on("user_joined", (data: { user: { username: string; id: string } }) => {
+      const joinMsg: Message = {
+        id: `join-${data.user.id}-${Date.now()}`,
+        text: `se unió al chat`,
+        username: data.user.username,
+        timestamp: new Date().toISOString(),
+      };
+      setMessages((prev) => [...prev, joinMsg]);
+      setTimeout(scrollToBottom, 100);
+    });
+
     // Limpieza al desmontar
     return () => {
       socketRef.current.off("receive_message");
+      socketRef.current.off("user_joined");
     };
   }, [socket]);
 
@@ -130,13 +143,19 @@ export const ChatRoom: React.FC<ChatRoomProps> = ({
                   key={msg.id}
                   className={`message ${
                     msg.username === username ? "my-message" : ""
-                  }`}
+                  } ${msg.text === "se unió al chat" ? "join-message" : ""}`}
                 >
-                  <strong>{msg.username}: </strong>
-                  {msg.text}
-                  <span className="message-time">
-                    {formatTime(msg.timestamp)}
-                  </span>
+                  {msg.text === "se unió al chat" ? (
+                    <em>🟢 <strong>{msg.username}</strong> se unió al chat</em>
+                  ) : (
+                    <>
+                      <strong>{msg.username}: </strong>
+                      {msg.text}
+                      <span className="message-time">
+                        {formatTime(msg.timestamp)}
+                      </span>
+                    </>
+                  )}
                 </div>
               ))
             )}
