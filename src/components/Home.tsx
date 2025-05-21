@@ -174,6 +174,15 @@ export const Home: React.FC = () => {
       );
       return;
     }
+    // Validar longitud de username
+    if (username.trim().length > 10) {
+      showErrorMessage(
+        toastRef,
+        "Error",
+        "El nombre de usuario no puede tener más de 10 caracteres."
+      );
+      return;
+    }
     if (socketRef.current && connected && !joinInProgress.current) {
       console.log(
         "Creando sala:",
@@ -240,6 +249,15 @@ export const Home: React.FC = () => {
 
   // Función para unirse a una sala
   const handleJoinRoom = (username: string, roomCode: string) => {
+    // Validar longitud de username
+    if (username.trim().length > 10) {
+      showErrorMessage(
+        toastRef,
+        "Error",
+        "El nombre de usuario no puede tener más de 10 caracteres."
+      );
+      return;
+    }
     if (socketRef.current && connected && !joinInProgress.current) {
       if (roomCode !== selectedRoom?.code) {
         console.log("Código de sala no coincide con el seleccionado");
