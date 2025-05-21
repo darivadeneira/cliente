@@ -173,7 +173,7 @@ export const ChatRoom: React.FC<ChatRoomProps> = ({
                   )}
                 </div>
               ))
-            }
+            )}
             <div ref={messagesEndRef} />
           </div>
         </Card>
