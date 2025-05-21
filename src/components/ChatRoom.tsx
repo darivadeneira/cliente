@@ -84,10 +84,23 @@ export const ChatRoom: React.FC<ChatRoomProps> = ({
       setTimeout(scrollToBottom, 100);
     });
 
+    // Escuchar cuando un usuario abandona la sala
+    socketRef.current.on("user_left", (data: { username: string; userId: string }) => {
+      const leftMsg: Message = {
+        id: `left-${data.userId}-${Date.now()}`,
+        text: `salió del chat`,
+        username: data.username,
+        timestamp: new Date().toISOString(),
+      };
+      setMessages((prev) => [...prev, leftMsg]);
+      setTimeout(scrollToBottom, 100);
+    });
+
     // Limpieza al desmontar
     return () => {
       socketRef.current.off("receive_message");
       socketRef.current.off("user_joined");
+      socketRef.current.off("user_left");
     };
   }, [socket]);
 
@@ -143,10 +156,12 @@ export const ChatRoom: React.FC<ChatRoomProps> = ({
                   key={msg.id}
                   className={`message ${
                     msg.username === username ? "my-message" : ""
-                  } ${msg.text === "se unió al chat" ? "join-message" : ""}`}
+                  } ${msg.text === "se unió al chat" ? "join-message" : ""} ${msg.text === "salió del chat" ? "left-message" : ""}`}
                 >
                   {msg.text === "se unió al chat" ? (
                     <em>🟢 <strong>{msg.username}</strong> se unió al chat</em>
+                  ) : msg.text === "salió del chat" ? (
+                    <em>🔴 <strong>{msg.username}</strong> salió del chat</em>
                   ) : (
                     <>
                       <strong>{msg.username}: </strong>
@@ -158,7 +173,7 @@ export const ChatRoom: React.FC<ChatRoomProps> = ({
                   )}
                 </div>
               ))
-            )}
+            }
             <div ref={messagesEndRef} />
           </div>
         </Card>
