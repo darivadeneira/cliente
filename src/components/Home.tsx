@@ -100,7 +100,14 @@ export const Home: React.FC = () => {
     );
 
     // Escuchar evento de error al crear sala (nombre duplicado u otro)
-    socketRef.current.on("create_room_error", (data: { message: string }) => {
+    socketRef.current.on("join_room_error", (data: { message: string }) => {
+      showErrorMessage(toastRef, "Error", data.message);
+      joinInProgress.current = false;
+    });
+
+    // Escuchar evento de error usuario ya en sala
+    socketRef.current.on("user_already_in_room", (data: { message: string }) => {
+      console.log("Error:", data.message);
       showErrorMessage(toastRef, "Error", data.message);
       joinInProgress.current = false;
     });
