@@ -1,10 +1,10 @@
 import React, { useEffect, useRef, useState } from "react";
-import { connect, io } from "socket.io-client";
+import { io } from "socket.io-client";
 import { Card } from "primereact/card";
 import { Button } from "primereact/button";
 import { InputText } from "primereact/inputtext";
 
-const SOCKET_SERVER_URL = import.meta.env.VITE_SOCKET_SERVER_URL || "server-production-3253.up.railway.app";
+const SOCKET_SERVER_URL = "server-production-3253.up.railway.app";
 
 interface Message {
   author: string;

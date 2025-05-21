@@ -15,7 +15,7 @@ import {
   showErrorMessage,
 } from "./SuccessToast";
 
-const SOCKET_SERVER_URL = import.meta.env.VITE_SOCKET_SERVER_URL || "server-production-3253.up.railway.app";
+const SOCKET_SERVER_URL = "server-production-3253.up.railway.app";
 
 interface Room {
   code: string;
@@ -49,7 +49,10 @@ export const Home: React.FC = () => {
   const [selectedRoom, setSelectedRoom] = useState<Room | null>(null);
   const [currentView, setCurrentView] = useState<"home" | "chat">("home");
   const [username, setUsername] = useState<string>("");
-  const [messageHistory, setMessageHistory] = useState<RoomHistoryData>([]);
+  const [messageHistory, setMessageHistory] = useState<RoomHistoryData>({
+    messages: [],
+    users: [],
+  });
   const socketRef = useRef<any>(null);
   const toastRef = useRef<Toast>(null);
 
@@ -121,7 +124,7 @@ export const Home: React.FC = () => {
             });
         });
 
-        socketRef.current.on("user_left", ({ userId, username, userCount, roomCode }: { userId: number; username: string; userCount: number, roomCode: string }) => {
+        socketRef.current.on("user_left", ({ username, userCount, roomCode }: { userId: number; username: string; userCount: number, roomCode: string }) => {
             console.log(`Usuario ${username} se abandonó a la sala. Total usuarios: ${userCount}`);
             setCurrentView("chat");
             setSelectedRoom((prev) => {
