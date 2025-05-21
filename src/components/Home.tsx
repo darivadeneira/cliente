@@ -99,6 +99,12 @@ export const Home: React.FC = () => {
       }
     );
 
+    // Escuchar evento de error al crear sala (nombre duplicado u otro)
+    socketRef.current.on("create_room_error", (data: { message: string }) => {
+      showErrorMessage(toastRef, "Error", data.message);
+      joinInProgress.current = false;
+    });
+
     // Escuchar evento de actualización de lista de salas
     socketRef.current.on("room_list_updated", () => {
       console.log("Lista de salas actualizada, solicitando datos nuevos");
