@@ -15,7 +15,7 @@ import {
   showErrorMessage,
 } from "./SuccessToast";
 
-const SOCKET_SERVER_URL = import.meta.env.VITE_SOCKET_SERVER_URL || "http://localhost:8080";
+const SOCKET_SERVER_URL = import.meta.env.VITE_SOCKET_SERVER_URL || "server-production-3253.up.railway.app";
 
 interface Room {
   code: string;
