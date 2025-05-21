@@ -194,6 +194,7 @@ export const Home: React.FC = () => {
           setTimeout(() => {
             // Unirse a la sala
             socketRef.current.emit("join_room", { roomCode, username });
+            setCurrentView("chat"); // Forzar vista chat por si no llega room_history
           }, 500);
         }
       );
@@ -236,6 +237,7 @@ export const Home: React.FC = () => {
         console.log("Historial recibido:", data);
         setMessageHistory(data);
         setCurrentView("chat");
+        joinInProgress.current = false; // Permitir nuevas uniones
       });
 
       socketRef.current.emit("join_room", { roomCode, username });
