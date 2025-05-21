@@ -151,6 +151,16 @@ export const Home: React.FC = () => {
     maxUsers: number,
     username: string
   ) => {
+    // Verificar si ya existe una sala con el mismo nombre
+    const roomExists = rooms.some((room) => room.name.trim().toLowerCase() === roomName.trim().toLowerCase());
+    if (roomExists) {
+      showErrorMessage(
+        toastRef,
+        "Error",
+        `Ya existe una sala con el nombre "${roomName}". Elige otro nombre.`
+      );
+      return;
+    }
     if (socketRef.current && connected && !joinInProgress.current) {
       console.log(
         "Creando sala:",
